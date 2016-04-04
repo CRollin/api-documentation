@@ -1,0 +1,108 @@
+FORMAT: 1A
+HOST: https://www.makeuponus/api/v1
+
+# Makeup On Us
+
+Polls is a simple API allowing consumers to view polls and vote in them.
+
+## Authentication [/auth/token?client_id={client_id}&client_secret={client_secret}&username={username}&password={password}&grant_type=password]
+
+**Makeup On Us** uses an OAuth2 based authentication, in order to sign the request, you should get an **access_token**, it should be queried using the following call:
+### Request Access Token [POST]
+
++ Parameters
+    
+    + client_id (string, required) - Client ID as given at signup
+    + client_secret (string, required) - Client Secret as given at signup
+    + username (string, required) - Makeup On Us partner username
+    + password (string, required) - Password
+        
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "access_token": "EVTVP1xDb8jvmJzvChHRKPlsXEgoBf",
+                "token_type": "Bearer",
+                "expires_in": 36000,
+                "refresh_token": "dV35FIgQyb99C6StzD5LLr9Bt90Y5q",
+                "scope": "read write"
+            }
+        
+## Products Collection [/products]
+
+### List All Products [GET]
+
+Query all products that belongs to your account and application.
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer access_token
+    
++ Response 200 (application/json)
+        
+    + Body
+
+            [
+                {
+                    "question": "Favourite programming language?",
+                    "published_at": "2015-08-05T08:40:51.620Z",
+                    "choices": [
+                        {
+                            "choice": "Swift",
+                            "votes": 2048
+                        }, {
+                            "choice": "Python",
+                            "votes": 1024
+                        }, {
+                            "choice": "Objective-C",
+                            "votes": 512
+                        }, {
+                            "choice": "Ruby",
+                            "votes": 256
+                        }
+                    ]
+                }
+            ]
+
+### Create a New Product [POST]
+
+You may create your own question using this action. It takes a JSON
+object containing a question and a collection of answers in the
+form of choices.
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer access_token
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /questions/2
+
+    + Body
+
+            {
+                "question": "Favourite programming language?",
+                "published_at": "2015-08-05T08:40:51.620Z",
+                "choices": [
+                    {
+                        "choice": "Swift",
+                        "votes": 0
+                    }, {
+                        "choice": "Python",
+                        "votes": 0
+                    }, {
+                        "choice": "Objective-C",
+                        "votes": 0
+                    }, {
+                        "choice": "Ruby",
+                        "votes": 0
+                    }
+                ]
+            }
